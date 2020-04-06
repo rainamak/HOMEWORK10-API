@@ -1,0 +1,76 @@
+<!doctype html> 
+<html> 
+<head> 
+    <title> Homework 10 API</title>
+    <meta name="author" content="Raina Mak"> 
+    <meta charset="utf-8"/> 
+    <style>
+        body{background-color:beige;}
+    
+    </style>
+    <script> 
+        /*-- use AJAX data pattern to send a request to the API, tetreive some data, and display the data
+        */
+        function loadData(){
+            request = new XMLHttpRequest(); 
+            request.open("GET", "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=boston&apikey=IRf1McTms041EqaYu7WMVAtq6JuW4WQd",true); 
+            request.onreadystatechange= function(){
+                if(request.readyState == 4 && request.status ==200){
+                    var result = request.response; 
+                    events = JSON.parse(result);
+                    /*data for names of events are an located in an array of objects called events. each object has key "name" with value artist name*/
+                    var array_Artists = []; 
+                    event_array = events["_embedded"]["events"]; 
+                    event_array.forEach(function(item){
+                        array_Artists.push("<li>" + item["name"]+"</li>");   
+                    }) 
+                    document.getElementById("data").innerHTML=array_Artists; 
+                    
+                }else if (request.readyState == 4 && request.status!= 200){
+                    document.getElementById("data").innerHTML="Error"; 
+                }
+            }
+            request.send();
+        }
+    
+    </script>
+    
+</head>
+
+<body onload="loadData()"> 
+    <!-- 
+    key: IRf1McTms041EqaYu7WMVAtq6JuW4WQd
+    API Call Format 
+    https://app.ticketmaster.com/{package}/{version}/{resource}.json?apikey=**{API key}
+    https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/
+    --> 
+    
+   <!-- describe API selected and what it does--> 
+    <div> This API is ticketmaster's discovery API. It allows users to access all the events in the ticketmaster data base. Ticketmaster is an online ticket sale company. For this assignment, I retrieved and displayed the data of all music events in Boston</div>
+    
+    <!-- cite website--> 
+    <div>Website Citation: https://developer.ticketmaster.com/products-and-docs/apis/getting-started/</div>
+    
+    <!--describe the options used for API request  --> 
+    <h1>Options Used for API request</h1>
+    <div>Ticket master follows the format: app.ticket.master/{package}/{version}/{resource}.json?apikey=xx</div>
+    <div> https://app.ticketmaster.com/discovery/v2/ is the root URL for accessing ticketmaster's discovery API, it specifies the discovery API package and the second version of the package. The discovery API allows access to information on events, attractions, and venues.</div>
+    <div>{resource} specifies the path to the API method. I passed in events to access the ticket master events </div>
+    <div>The "classifiactionName" paramater filters by classifaction name including segment names, subgenre, type, sub-type. I passed "music" to filter music events. </div>
+    <div>The "city" parameter filters the music events by city. I passed in "boston" to access only music events in Boston.</div>
+    <div>Finally, "apikey" is where I put my personalized apikey provided by signing up on ticketmaster's website.</div>
+    <!-- two applications where this API would be helpful--> 
+    
+    <h1>Applications where ticketmaster's API would be helpful:</h1>
+    <div>
+    <li> Checking what events are available in a specific venue, which can be done by using a venueId parameter</li>
+    <li> Searching all events for in a given country, which can be done using the countryCode paramter </li>
+    </div>
+    
+    <!-- displaying list of music events--> 
+    <h1 style="text-align: center;">Music events in Boston:</h1>
+    <div id="data" style="text-align: center;">Loading...</div>
+ 
+
+</body>
+</html>
