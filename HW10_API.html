@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <title> Homework 10 API</title>
+    <meta charset="utf-8"/>
+    <script>
+        function loadData(){
+            request = new XMLHttpRequest();
+            request.open("GET", "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=boston&apikey=IRf1McTms041EqaYu7WMVAtq6JuW4WQd",true);
+            request.onreadystatechange= function(){
+                if(request.readyState == 4 && request.status ==200){
+                    var result = request.response;
+                    events = JSON.parse(result);
+                    event_array = events["_embedded"]["events"];
+                    event_array.forEach(function(item) {
+                      console.log(item["name"])
+                    })
+                    //
+                    // for each event in events["_embedded"]["events"] {
+                    //   console.log(event["name"])
+                    // }
+                    document.getElementById("data").innerHTML=events._embedded.events.name;
+                    event_array.forEach(function(item){
+                        document.getElementById("data").innerHTML+=item["name"];
+                    }
+
+                )
+               
+                }
+            }
+            request.send();
+        }
+
+    </script>
+
+</head>
+
+<body onload="loadData()">
+    <!--
+    ticketmaster password: SWaggerific12
+    key: IRf1McTms041EqaYu7WMVAtq6JuW4WQd
+    API Call Format
+    https://app.ticketmaster.com/{package}/{version}/{resource}.json?apikey=**{API key}
+    https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/
+    -->
+
+    <!-- use AJAX data pattern to send a request to the API, tetreive some data, and display the data-->
+
+
+
+   <!-- describe API selected and what it does-->
+    <div> </div>
+
+    <!-- cite website-->
+    <div></div>
+
+    <!--describe the options used for API request
+    options = parameters (either optional or required) used in API call to get desired data.
+    describe
+    1. what you passed in or the given paramater
+    2. purpose of the paramater
+    3. what the value passed in for the paramter means in terms of the call itself
+    -->
+    <div> </div>
+
+    <!-- two applications where this API would be helpful-->
+
+    <div></div>
+
+    <div id="data">Loading...</div>
+
+
+</body>
+</html>
